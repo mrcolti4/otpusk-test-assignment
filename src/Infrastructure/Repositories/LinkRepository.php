@@ -63,13 +63,14 @@ class LinkRepository implements LinkRepositoryInterface
         $operator = $direction === PaginationDirection::AFTER ? '>' : '<';
 
         $result = $query->select('*')
+            ->from(self::TABLE_NAME, 'l')
             ->where(\sprintf('%s %s :cursor', self::ID_FIELD, $operator))
             ->setMaxResults($limit + 1)
             ->setParameter('cursor', $cursor, Types::STRING)
             ->executeQuery()
             ->fetchAllAssociative()
             ;
-        
+
         $hasMore = \count($result) > $limit;
         $lastItem = \end($result);
         
@@ -124,22 +125,23 @@ class LinkRepository implements LinkRepositoryInterface
     {
         $query = $this->connection->createQueryBuilder();
         
-        $query->update(self::TABLE_NAME, 'l')
-            ->set('l.url', ':url')
-            ->set('l.title', ':title')
-            ->set('l.updated_at', ':updated_at')
-            ->where('l.id = :id')
-            ->setParameter('id', $linkId->id)
+        $query
+            ->update(self::TABLE_NAME, 'l')
+            ->set('url', ':url')
+            ->set('title', ':title')
+            ->set('updated_at', ':updated_at')
+            ->where('id = :id')
             ->setParameters(
                 [
-                self::URL_FIELD => $link->url,
-                self::TITLE_FIELD => $link->title,
-                self::UPDATED_AT_FIELD =>$link->updatedAt->format(DATE_RFC3339_EXTENDED),
+                    self::URL_FIELD => $link->url,
+                    self::TITLE_FIELD => $link->title,
+                    self::UPDATED_AT_FIELD => $link->updatedAt,
+                    self::ID_FIELD => $linkId->id
                 ],
                 [
                     self::URL_FIELD => Types::STRING,
                     self::TITLE_FIELD => Types::STRING,
-                    self::UPDATED_AT_FIELD => Types::DATETIME_IMMUTABLE
+                    self::UPDATED_AT_FIELD => Types::DATETIME_IMMUTABLE,
                 ]
             )
             ->executeStatement();

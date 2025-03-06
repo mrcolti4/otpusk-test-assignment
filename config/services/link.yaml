@@ -17,3 +17,7 @@ services:
       class: Infrastructure\Repositories\LinkRepository
       arguments:
         - '@doctrine.dbal.default_connection'
+        - '@link.data_mapper'
+
+    link.data_mapper:
+      class: Service\Link\Application\LinkDataMapper

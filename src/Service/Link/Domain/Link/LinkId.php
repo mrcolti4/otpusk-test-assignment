@@ -8,7 +8,7 @@ use Service\Link\Domain\ErrorsDictionary;
 
 final class LinkId
 {
-    private const string REGEX = '/^[a-zA-Z0-9]{8}$/';
+    private const string REGEX = '/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/';
     public function __construct(
         public string $id
     )

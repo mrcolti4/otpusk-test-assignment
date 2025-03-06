@@ -18,8 +18,8 @@ class LinkDataMapper
                 new LinkId($link['id']),
                 $link['url'],
                 $link['title'],
-                new \DateTimeImmutable($link['createdAt']),
-                new \DateTimeImmutable($link['updatedAt']),
+                new \DateTimeImmutable($link['created_at']),
+                $link['updated_at'] ? new \DateTimeImmutable($link['updated_at']) : null,
             );
         }
 
