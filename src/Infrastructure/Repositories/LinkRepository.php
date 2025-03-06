@@ -86,7 +86,7 @@ class LinkRepository implements LinkRepositoryInterface
 
         return new PaginationResultData(
             hasMore: $hasMore,
-            nextCursor: $nextCursor,
+            nextCursor: $nextCursor ?? '',
             data: $links
         );
     }
@@ -107,7 +107,7 @@ class LinkRepository implements LinkRepositoryInterface
             url: $result[self::URL_FIELD],
             title: $result[self::TITLE_FIELD],
             createdAt: new \DateTimeImmutable($result['created_at']),
-            updatedAt: new \DateTimeImmutable($result['updated_at']),
+            updatedAt: $result['updated_at'] ? new \DateTimeImmutable($result['updated_at']) : null,
         );
     }
 

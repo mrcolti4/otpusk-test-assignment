@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Додати нове посилання{% endblock %}
+
+{% block body %}
+    <h1>Додати нове посилання</h1>
+
+    <form id="linkForm">
+        <div>
+            <label for="title">Назва:</label>
+            <input type="text" id="title" name="title" required>
+        </div>
+        <div>
+            <label for="url">URL:</label>
+            <input type="url" id="url" name="url" required>
+        </div>
+        <button type="submit">Створити</button>
+    </form>
+
+    <div id="message"></div>
+
+    <script>
+        document.getElementById('linkForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const title = document.getElementById('title').value;
+            const url = document.getElementById('url').value;
+
+            const response = await fetch('/api/admin/links/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ title, url })
+            });
+
+            const result = await response.json();
+            const messageDiv = document.getElementById('message');
+
+            if (response.ok && result.success) {
+                messageDiv.innerHTML = '<p style="color: green;">Посилання створено успішно!</p>';
+                document.getElementById('linkForm').reset();
+            } else {
+                messageDiv.innerHTML = `<p style="color: red;">Помилка: ${result.error || 'Не вдалося створити посилання'}</p>`;
+            }
+        });
+    </script>
+{% endblock %}

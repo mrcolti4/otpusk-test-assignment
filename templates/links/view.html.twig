@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+<div class="container mt-4">
+    <h1>{{ item.title }}</h1>
+    
+    <div class="my-4">
+        {{item.url}}
+    </div>
+    
+    <a href="{{ path('admin.links.index') }}" class="btn btn-link">Назад до списку</a>
+</div>
+{% endblock %}

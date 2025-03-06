@@ -7,7 +7,6 @@ namespace Infrastructure\Controller;
 use Infrastructure\Requests\CreateLinkRequest;
 use Infrastructure\Requests\GetLinksRequest;
 use Infrastructure\Requests\UpdateLinkRequest;
-use Service\Common\Enums\PaginationDirection;
 use Service\Link\Application\DTO\GetLinksQuery;
 use Service\Link\Application\DTO\StoreLinkCommand;
 use Service\Link\Application\DTO\UpdateLinkCommand;
@@ -24,7 +23,7 @@ class LinkController extends AbstractController
     public function __construct(
         private LinkHandlerInterface $linkHandler,
     ) {}
-    #[Route(path: '/', name: 'index', methods: ['GET'])]
+    #[Route(path: '/', name: 'index', methods: ['POST'])]
     public function index(
         #[MapRequestPayload]
         GetLinksRequest $request,

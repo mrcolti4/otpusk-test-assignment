@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Редагувати посилання{% endblock %}
+
+{% block body %}
+    <h1>Редагувати посилання</h1>
+
+    <form id="editLinkForm" data-id="{{ link.id }}">
+        <div>
+            <label for="title">Назва:</label>
+            <input type="text" id="title" name="title" value="{{ link.title }}" required>
+        </div>
+        <div>
+            <label for="url">URL:</label>
+            <input type="url" id="url" name="url" value="{{ link.url }}" required>
+        </div>
+        <button type="submit">Оновити</button>
+    </form>
+
+    <div id="message"></div>
+
+    <script>
+        document.getElementById('editLinkForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const form = event.target;
+            const linkId = form.getAttribute('data-id');
+            const title = document.getElementById('title').value;
+            const url = document.getElementById('url').value;
+
+            const response = await fetch(`/api/admin/links/${linkId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ title, url })
+            });
+
+            const result = await response.json();
+            const messageDiv = document.getElementById('message');
+
+            if (response.ok && result.success) {
+                messageDiv.innerHTML = '<p style="color: green;">Посилання оновлено успішно!</p>';
+            } else {
+                messageDiv.innerHTML = `<p style="color: red;">Помилка: ${result.error || 'Не вдалося оновити посилання'}</p>`;
+            }
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Список посилань{% endblock %}
+
+{% block body %}
+    <h1>Список посилань</h1>
+
+    <ul id="links-list">
+        <li>Завантаження...</li>
+    </ul>
+
+    <div id="pagination">
+        <button id="prev-button" class="btn btn-secondary">Попередня</button>
+        <button id="next-button" class="btn btn-secondary">Наступна</button>
+    </div>
+
+    <a href="{{ path('admin.view.links.store') }}" class="btn btn-primary">Додати посилання</a>
+
+    <script>
+        let currentCursor = '';
+        let currentDirection = 'after';
+
+        async function fetchLinks(cursor = '', direction = 'after') {
+            const response = await fetch('/api/admin/links/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    limit: 2,
+                    cursor: cursor,
+                    direction: direction
+                })
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                const links = result.data.data;
+                const list = document.getElementById('links-list');
+                list.innerHTML = '';
+
+                links.forEach(link => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <a href="${link.url}" target="_blank">${link.title}</a>
+                        <a href="/admin/links/edit/${link.id}" class="btn btn-secondary">Редагувати</a>
+                        <button onclick="deleteLink('${link.id}')" class="btn btn-danger">Видалити</button>
+                    `;
+                    list.appendChild(li);
+                });
+
+                document.getElementById('prev-button').onclick = () => fetchLinks(links[0].id, 'before');
+                document.getElementById('next-button').onclick = () => fetchLinks(links[links.length-1].id, 'after');
+            }
+        }
+
+        async function deleteLink(linkId) {
+            if (!confirm('Ви впевнені, що хочете видалити це посилання?')) return;
+
+            const response = await fetch(`/api/admin/links/${linkId}`, {
+                method: 'DELETE',
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                fetchLinks(currentCursor, currentDirection);
+            } else {
+                alert('Помилка видалення');
+            }
+        }
+
+        fetchLinks();
+    </script>
+{% endblock %}

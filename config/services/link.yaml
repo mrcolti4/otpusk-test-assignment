@@ -5,6 +5,13 @@ services:
       autoconfigure: true
       arguments:
         - '@link.handler'
+    
+    Infrastructure\Controller\LinkViewController:
+      public: true
+      autowire: true
+      autoconfigure: true
+      arguments:
+        - '@link.handler'
 
     link.handler:
       class: Service\Link\Application\LinkHandler
