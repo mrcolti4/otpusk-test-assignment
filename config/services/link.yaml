@@ -1,0 +1,19 @@
+services:
+    Infrastructure\Controller\LinkController:
+      public: true
+      autowire: true
+      autoconfigure: true
+      arguments:
+        - '@link.handler'
+
+    link.handler:
+      class: Service\Link\Application\LinkHandler
+      autowire: true
+      autoconfigure: true
+      arguments:
+        - '@link.repository'
+
+    link.repository:
+      class: Infrastructure\Repositories\LinkRepository
+      arguments:
+        - '@doctrine.dbal.default_connection'
