@@ -9,6 +9,8 @@ use Service\Link\Domain\Link\LinkId;
 
 interface LinkRepositoryInterface
 {
+    public function nextId(): string;
+
     public function store(Link $link): void;
 
     public function getLinks(Link $link): array;

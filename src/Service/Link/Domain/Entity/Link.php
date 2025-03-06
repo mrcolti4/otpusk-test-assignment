@@ -15,5 +15,9 @@ class Link
         public string $url,
         #[Column(name: 'title', type: 'string', unique: true)]
         public string $title,
+        #[Column(name: 'created_at', type: 'datetime_immutable', nullable: false)]
+        public string $createdAt,
+        #[Column(name: 'updated_at', type: 'datetime_immutable', nullable: true)]
+        public string $updatedAt,
     ) {}
 }

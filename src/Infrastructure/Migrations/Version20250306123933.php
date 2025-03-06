@@ -25,7 +25,9 @@ final class Version20250306123933 extends AbstractMigration
         CREATE TABLE {$this->tableName} (
             id TEXT PRIMARY KEY,
             url TEXT NOT NULL,
-            title TEXT NOT NULL
+            title TEXT NOT NULL,
+            created_at DATETIME NOT NULL,
+            updated_at DATETIME
         );
         SQL);
     }

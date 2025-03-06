@@ -9,9 +9,11 @@ use Service\Link\Domain\Link\LinkId;
 final readonly class Link implements \JsonSerializable
 {
     public function __construct(
-        private LinkId $id,
-        private string $url,
-        private string $title,
+        public LinkId $id,
+        public string $url,
+        public string $title,
+        public \DateTimeImmutable $createdAt,
+        public \DateTimeImmutable $updatedAt,
     ) {}
     public function jsonSerialize(): mixed
     {
