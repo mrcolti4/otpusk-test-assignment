@@ -6,7 +6,7 @@ Follow these steps to get the project up and running:
 
     ```bash
     git clone https://github.com/mrcolti4/otpusk-test-assignment.git
-    cd otpusk-test-assignmen
+    cd otpusk-test-assignment
     ```
 
 2. **Install dependencies:**
